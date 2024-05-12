@@ -1,0 +1,55 @@
+version: "3"
+services:
+  database:
+    image: postgis/postgis:13-master
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data/database:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: "admin"
+      POSTGRES_PASSWORD: "1234"
+      POSTGRES_DB: "StaySphere"
+
+  directus:
+    image: directus/directus:10.10.4
+    ports:
+      - 8055:8055
+    volumes:
+      - ./uploads:/directus/uploads
+      - ./admin/extensions:/directus/extensions
+    depends_on:
+      - database
+    environment:
+      KEY: "6cTeF2dEuOPA6IhsQ48dVepDIM1lyGBu"
+      SECRET: "AiyqRjXjInQHsZyyy5KMPSalZGWmt5Rm"
+
+      EXTENSIONS_AUTO_RELOAD: "true"
+      PUBLIC_URL: "http://localhost:8055"
+
+      ADMIN_EMAIL: "admin@example.com"
+      ADMIN_PASSWORD: "d1r3ctu5"
+
+      EMAIL_FROM: "hello@trial-ynrw7gyqv6242k8e.mlsender.net"
+      EMAIL_TRANSPORT: "smtp"
+      EMAIL_SMTP_HOST: "smtp.mailersend.net"
+      EMAIL_SMTP_PORT: "587"
+      EMAIL_SMTP_USER: "MS_aGh5TR@trial-ynrw7gyqv6242k8e.mlsender.net"
+      EMAIL_SMTP_PASSWORD: $EMAIL_SMTP_PASSWORD
+
+      DB_CLIENT: "pg"
+      DB_HOST: "database"
+      DB_PORT: "5432"
+      DB_DATABASE: "StaySphere"
+      DB_USER: "admin"
+      DB_PASSWORD: "1234"
+      WEBSOCKETS_ENABLED: true
+
+#      REFRESH_TOKEN_COOKIE_SAME_SITE: 'none'
+#      REFRESH_TOKEN_COOKIE_SECURE: 'true'
+      REFRESH_TOKEN_COOKIE_SAME_SITE: 'lax'
+      REFRESH_TOKEN_COOKIE_SECURE: 'false'
+#      ACCESS_TOKEN_TTL: '100h'
+
+      CORS_ENABLED: true
+
