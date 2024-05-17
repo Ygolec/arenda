@@ -30,9 +30,9 @@ export default defineNuxtConfig({
     },
     directus: {
         // autoFetch: true,
+        autoRefresh: true,
         url: "http://localhost:8055/",
     },
-
 
 
     // security:{
