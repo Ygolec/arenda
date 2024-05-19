@@ -17,6 +17,7 @@
       <v-img class="ma-auto" width="200" cover :src="getThumbnail(props.photo)"/>
       <v-card-item>
         <v-btn
+            :href="'/hosting/become-a-host/'+props.rental.id"
             class="text-none mb-4"
             color="black"
             variant="flat"

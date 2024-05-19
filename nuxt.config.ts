@@ -26,7 +26,7 @@ export default defineNuxtConfig({
         },
     ],
     yandexMaps: {
-        apikey: 'e1a6fad9-632c-4ed2-9f20-dd0cc990c444',
+        apikey: process.env.API_YANDEX_GEOCODER,
     },
     directus: {
         // autoFetch: true,

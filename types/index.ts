@@ -13,9 +13,10 @@ declare global {
         location_id?: string | number;
         type_id?: string | number;
         type_booking_id?: string | number;
-        content_id: string | number;
+        content_id: number;
         conveniences_ids: number[];
         comments_ids: number[];
+        status: number;
     }
 
     interface rentals_coordinates {
@@ -64,13 +65,15 @@ declare global {
 
     }
 
-    interface content_of_rental{
+    interface content_of_rental {
         id?: number;
         rental_id?: number;
         number_of_bathrooms: number;
         number_of_bedrooms: number;
         number_of_beds: number;
         number_of_max_guests: number;
+        title: string;
+        description: string;
     }
 
     interface type_of_rental {
@@ -84,5 +87,11 @@ declare global {
         icon: string;
         name: string;
         description: string;
+    }
+
+    interface status {
+        id: number;
+        name: string;
+        name_translate: string;
     }
 }

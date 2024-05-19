@@ -1,17 +1,17 @@
 <template>
-  <v-app-bar :elevation="0">
+  <v-app-bar :elevation="0" :style="{ zIndex: 1004, transition: 'none !important' }">
     <template v-slot:append>
       <v-btn icon="mdi:mdi-heart"></v-btn>
 
       <v-btn icon="mdi:mdi-magnify"></v-btn>
 
-      <v-btn icon="mdi:mdi-plus"></v-btn>
+      <v-btn icon="mdi:mdi-plus" href="/hosting/become-a-host"></v-btn>
     </template>
   </v-app-bar>
   <v-container>
 
     <v-row>
-      <v-col cols="3" v-for="(rental, index) in rentals" :key="index">
+      <v-col cols="3" v-for="(rental, index) in rentals" v-if="rentals" :key="index">
         <dialog-edit
             :key="index"
             @close="closeDialog(rental.id)"
@@ -23,8 +23,8 @@
         <v-card
             @click="openDialog(rental.id)"
         >
-          <v-chip class="status">
-            Chip
+          <v-chip class="status" v-if="statuses[index]">
+            {{ statuses[index].name_translate }}
           </v-chip>
           <v-img :src="getThumbnail(uniquePhotos[rental.content_id])"/>
           {{ rental }}
@@ -35,18 +35,21 @@
 </template>
 <script setup lang="ts">
 import DialogEdit from "~/components/hosting/listings/dialog-edit.vue";
+import type {ComputedRef} from "vue";
 
 definePageMeta({
   middleware: ["account-settings"]
 })
 
+
 const {getItems} = useDirectusItems();
 const rentals = ref<rental[]>([]);
 const photos = ref<content_of_rental_files[]>([]);
+const statuses = ref<status[]>([]);
 const {getThumbnail} = useDirectusFiles();
-const dialogs = ref({});
-const uniquePhotos = computed(() => {
-  return photos.value.reduce((acc, photo) => {
+const dialogs = ref<Record<number, boolean>>({});
+const uniquePhotos: ComputedRef<Record<number, string>> = computed(() => {
+  return photos.value.reduce((acc: Record<number, string>, photo) => {
     if (!acc[photo.content_of_rental_id]) {
       acc[photo.content_of_rental_id] = photo.directus_files_id;
     }
@@ -54,11 +57,11 @@ const uniquePhotos = computed(() => {
   }, {});
 });
 
-const openDialog = (id) => {
+const openDialog = (id: number) => {
   dialogs.value[id] = true;
 };
 
-const closeDialog = (id) => {
+const closeDialog = (id: number) => {
   dialogs.value[id] = false;
 };
 
@@ -66,10 +69,6 @@ const fetchRentals = async () => {
   try {
     rentals.value = await getItems<rental>({
       collection: "rentals",
-      // params: {
-      //   filter: filters,
-      // },
-
     });
     rentals.value.forEach(rental => {
       dialogs.value[rental.id] = false;
@@ -79,9 +78,27 @@ const fetchRentals = async () => {
   } finally {
     if (rentals.value.length > 0) {
       await fetchPhotos();
+      await fetchStatus();
     }
   }
 };
+
+const fetchStatus = async () => {
+  try {
+    statuses.value = await getItems<status>({
+      collection: "rentals_status",
+      params: {
+        filter: {
+          id: {
+            "_in": rentals.value.map(rental => rental.status)
+          }
+        }
+      }
+    });
+  } catch (e) {
+    console.error('Ошибка при получении статусов:', e);
+  }
+}
 
 const fetchPhotos = async () => {
   try {

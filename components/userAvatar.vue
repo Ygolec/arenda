@@ -42,6 +42,14 @@
           <v-btn
               rounded
               variant="text"
+              href="/hosting/listings"
+          >
+            Список сдаваемого жилья
+          </v-btn>
+          <v-divider class="my-3"></v-divider>
+          <v-btn
+              rounded
+              variant="text"
               @click="emit('exit')"
           >
             Выйти

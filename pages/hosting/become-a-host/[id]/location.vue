@@ -75,7 +75,7 @@
           <v-row justify="center">
             <v-sheet>
               <v-card max-width="800">
-                <map-with-point/>
+                <map-with-point @update="updateSelectedPoint" :selected-point="point.coordinates"/>
               </v-card>
             </v-sheet>
           </v-row>
@@ -92,6 +92,7 @@
     >
     </v-stepper-actions>
   </v-stepper>
+  {{ rental }}
 </template>
 <script setup lang="ts">
 import StepperHeaders from "~/components/hosting/become-a-host/stepper-headers.vue";
@@ -105,6 +106,12 @@ import type {BehaviorType, LngLat, YMap, YMapLocationRequest} from "@yandex/ymap
 import {shallowRef} from "vue";
 import MapWithPoint from "~/components/hosting/become-a-host/location/map-with-point.vue";
 
+const {updateItem} = useDirectusItems();
+const {getItemById} = useDirectusItems();
+
+
+const user = useDirectusUser();
+
 const route = useRoute()
 const stepper = ref(0)
 const step = ref(8)
@@ -113,6 +120,7 @@ const LOCATION = ref<YMapLocationRequest>({
   zoom: 9,
 });
 const map = shallowRef<null | YMap>(null);
+const rental = ref<rental>()
 const enabledBehaviors = ref<BehaviorType[]>([]);
 const searchResults = ref<string[]>([]);
 const selectedResultOfSearch = ref<string | null>(null);
@@ -120,6 +128,12 @@ const detailsOfSelectedResult = ref();
 const detailsForForm = ref();
 const search = ref();
 const loading = ref(false);
+const rental_location_id = ref();
+const selectedPointCoordinate = ref()
+const updateSelectedPoint = (newCoordinates) => {
+  selectedPointCoordinate.value = newCoordinates
+  console.log(selectedPointCoordinate.value)
+}
 const location = ref<location>(
     {
       full_address: '',
@@ -133,10 +147,17 @@ const point = ref({
   coordinates: [37.617644, 55.755819] as LngLat,
 });
 
-function next() {
-  stepper.value++
+async function next() {
+  console.log(stepper.value)
+  if (stepper.value === 2) {
+    await updateConveniencesOfRentals();
+  }
+  stepper.value++;
+
   if (stepper.value > 3) {
-    return navigateTo(`/hosting/become-a-host/${route.params.id}/${links_of_become_a_host[stepper.value]}`)
+    await updateCoordinateOfRental()
+    stepper.value--
+    // return navigateTo(`/hosting/become-a-host/${route.params.id}/${links_of_become_a_host[stepper.value]}`)
   }
 
 }
@@ -145,12 +166,102 @@ function prev() {
   if (stepper.value < 3) {
     return navigateTo(`/hosting/become-a-host/${route.params.id}/${links_of_become_a_host[stepper.value - 1]}`)
   } else stepper.value--
-
 }
 
 const disabled = computed(() => {
-  return stepper.value === 0 ? 'prev' : stepper.value === step.value ? 'next' : undefined;
+  if (stepper.value === 0) {
+    if (!selectedResultOfSearch.value) {
+      return true
+    } else if (stepper.value === step.value) {
+      return 'prev'
+    } else {
+      return 'next'
+    }
+  } else {
+    if (!selectedResultOfSearch.value) {
+      return 'next'
+    } else if (stepper.value === step.value) {
+      return 'next'
+    }
+  }
 });
+
+const updateCoordinateOfRental = async () => {
+  try {
+
+    if (rental.value && selectedPointCoordinate.value){
+      if (rental.value.coordinates_id) {
+        console.log(321)
+        await updateItem({
+          collection: "rentals_coordinates",
+          id: rental.value.coordinates_id.toString(),
+          item: {
+            longitude: selectedPointCoordinate.value[0],
+            latitude: selectedPointCoordinate.value[1],
+          }
+        });
+      }
+      if (user.value && !rental.value.coordinates_id) {
+        console.log(123)
+        await $fetch('/api/rentals_coordinate/create-by-user', {
+          body: {
+            coordinates: selectedPointCoordinate.value,
+            user_id: user.value.id,
+            rental_id: route.params.id,
+          },
+          method: 'POST'
+        })
+      }
+    }
+  } catch (e) {
+  }
+}
+
+const updateConveniencesOfRentals = async () => {
+  try {
+    await updateItem({
+      collection: "location",
+      id: rental_location_id.value.toString(),
+      item: {
+        full_address: location.value.full_address,
+        city: location.value.city,
+        index: location.value.index,
+        rental_number: location.value.rental_number,
+        country: location.value.country,
+      }
+    });
+  } catch (e) {
+  }
+}
+
+const fetchLocationIDOfRentals = async () => {
+  try {
+    const response: any = await getItemById<rental>({
+      collection: "rentals",
+      id: route.params.id.toString(),
+      params: {
+        fields: ["location_id"]
+      }
+    });
+    if (response.location_id !== null) {
+      rental_location_id.value = response.location_id
+    }
+  } catch (e) {
+  }
+};
+
+const fetchRental = async () => {
+  try {
+    const response: any = await getItemById<rental>({
+      collection: "rentals",
+      id: route.params.id.toString(),
+    });
+    if (response !== null) {
+      rental.value = response
+    }
+  } catch (e) {
+  }
+};
 
 async function searching(searchQuery: string | null) {
   search.value = searchQuery;
@@ -191,16 +302,17 @@ watch(selectedResultOfSearch, async () => {
           rental_number: detailsForForm.value.rental_number,
           country: detailsForForm.value.country,
         }
+
       }
     }
   }
-
-
 })
 
 
 onMounted(async () => {
   stepper.value = 2
+  await fetchLocationIDOfRentals();
+  await fetchRental();
 });
 </script>
 <style scoped>
