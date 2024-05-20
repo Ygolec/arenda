@@ -6,7 +6,7 @@ import {
     createFolder,
     readFolders,
     uploadFiles,
-    readItems, createItem
+    readItems, createItem, updateFile
 } from "@directus/sdk";
 import {readFiles} from "h3-formidable";
 import {readFileSync} from "node:fs";
@@ -70,6 +70,19 @@ export default defineEventHandler(async (event) => {
                 )
 
                 if (idOfRentalContent[0].id) {
+                    const photos = await client.request(
+                        withToken(directusToken,
+                            readItems('content_of_rental_files', {
+                                filter: {
+                                    content_of_rental_id: {
+                                        _eq: idOfRentalContent[0].id
+                                    }
+                                }
+                            })
+                        )
+                    )
+
+
                     if (uploadPhotos.length) {
                         for (let i = 0; i < uploadPhotos.length; i++) {
                             await client.request(
@@ -87,6 +100,27 @@ export default defineEventHandler(async (event) => {
                                 createItem('content_of_rental_files', {
                                     content_of_rental_id: idOfRentalContent[0].id,
                                     directus_files_id: uploadPhotos.id
+                                })
+                            )
+                        )
+                    }
+                    if (!photos.length) {
+                        const temp = await client.request(
+                            withToken(directusToken,
+                                readItems('content_of_rental_files', {
+                                    fields: ['directus_files_id'],
+                                    filter: {
+                                        content_of_rental_id: {
+                                            _eq: idOfRentalContent[0].id
+                                        }
+                                    }
+                                })
+                            )
+                        )
+                        await client.request(
+                            withToken(directusToken,
+                                updateFile(temp[0].directus_files_id, {
+                                    tags: ['main']
                                 })
                             )
                         )

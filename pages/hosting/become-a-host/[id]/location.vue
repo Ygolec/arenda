@@ -33,7 +33,7 @@
               <v-divider class="ma-5"/>
               <v-card max-width="800">
                 <yandex-map
-                    v-model="map"
+                    :v-model="map"
                     :settings="{
                       location: {
                         ...LOCATION
@@ -130,7 +130,7 @@ const search = ref();
 const loading = ref(false);
 const rental_location_id = ref();
 const selectedPointCoordinate = ref()
-const updateSelectedPoint = (newCoordinates) => {
+const updateSelectedPoint = (newCoordinates: LngLat) => {
   selectedPointCoordinate.value = newCoordinates
   console.log(selectedPointCoordinate.value)
 }
@@ -156,8 +156,7 @@ async function next() {
 
   if (stepper.value > 3) {
     await updateCoordinateOfRental()
-    stepper.value--
-    // return navigateTo(`/hosting/become-a-host/${route.params.id}/${links_of_become_a_host[stepper.value]}`)
+    return navigateTo(`/hosting/become-a-host/${route.params.id}/${links_of_become_a_host[stepper.value]}`)
   }
 
 }
@@ -193,7 +192,7 @@ const updateCoordinateOfRental = async () => {
       if (rental.value.coordinates_id) {
         console.log(321)
         await updateItem({
-          collection: "rentals_coordinates",
+          collection: "rentals_coordinate",
           id: rental.value.coordinates_id.toString(),
           item: {
             longitude: selectedPointCoordinate.value[0],

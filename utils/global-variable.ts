@@ -1,4 +1,4 @@
-export const links_of_become_a_host = {
+export const links_of_become_a_host:{[key: number]: string} = {
     0: "structure",
     1: 'privacy-type',
     2: 'location',

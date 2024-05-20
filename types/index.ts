@@ -94,4 +94,8 @@ declare global {
         name: string;
         name_translate: string;
     }
+    interface directus_files{
+        id: string;
+        tags: string[];
+    }
 }

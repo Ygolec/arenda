@@ -24,4 +24,4 @@ logs
 !.env.example
 /data/database
 /uploads
-/server/api/test/
+/server/api/test
