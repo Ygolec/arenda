@@ -98,4 +98,11 @@ declare global {
         id: string;
         tags: string[];
     }
+    interface messages{
+        id: number;
+        user_created: string;
+        date_created: string;
+        dialog_of_messages_id: number;
+        content: string;
+    }
 }
