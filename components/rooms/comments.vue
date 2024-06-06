@@ -2,31 +2,33 @@
   {{ comments }}
   {{ overall_impression }}
   <v-container>
-    <v-container>
+    <v-container class="pl-6">
       <div class="d-flex  flex-column my-auto">
-        <v-row>
-          <div class="text-h3 mt-5">
+        <v-row align="center" class="">
+          <v-icon icon="star"></v-icon>
+          <div class="text-h5">
             {{ average_rating }}
           </div>
-          <div class="px-3">{{ comments.length }} Отзывов</div>
+          <v-icon icon="mdi:mdi-circle-small" size="30"></v-icon>
+          <div class="text-h5">{{ comments.length }} Отзывов</div>
         </v-row>
       </div>
     </v-container>
     <v-row>
       <v-col>
-        <v-card min-width="230px">
-          <v-card-title>Общая оценка</v-card-title>
-          <v-card-item>
+        <v-card variant="text" min-width="230px">
+          <v-card-title class="pb-0">Общая оценка</v-card-title>
+          <v-card-item class="pt-0">
             <v-list
                 bg-color="transparent"
-                class="d-flex flex-column-reverse"
+                class="d-flex flex-column-reverse pt-0"
                 density="compact"
             >
-              <v-list-item v-for="(rating,i) in overall_impression" :key="i">
+              <v-list-item class="pb-0 pt-0" style="min-height: 0" v-for="(rating,i) in overall_impression" :key="i">
                 <v-progress-linear
                     :model-value="rating / comments.length * 100"
                     class="mx-n5"
-                    color="yellow-darken-3"
+                    color="black"
                     height="5"
                     rounded
                 ></v-progress-linear>
@@ -45,44 +47,60 @@
           </v-card-item>
         </v-card>
       </v-col>
-      <v-col>
-        <v-card>
+      <v-col class="d-flex flex-column">
+        <v-card variant="text">
           <v-card-title>Чистота</v-card-title>
-          {{ average_cleanliness }}
+          <v-card-text>
+            <span class="average_number">{{ average_cleanliness }}</span>
+          </v-card-text>
         </v-card>
+        <v-icon icon="mdi:mdi-spray-bottle" class="icon-of-rating" size="40"></v-icon>
       </v-col>
-      <v-col>
-        <v-card>
+      <v-col class="d-flex flex-column">
+        <v-card variant="text">
           <v-card-title>Точность</v-card-title>
-          {{ average_accuracy }}
+          <v-card-text>
+            <span class="average_number"> {{ average_accuracy }}</span>
+          </v-card-text>
         </v-card>
+        <v-icon icon="mdi:mdi-check-circle" class="icon-of-rating" size="40"></v-icon>
       </v-col>
-      <v-col>
-        <v-card>
+      <v-col class="d-flex flex-column">
+        <v-card variant="text">
           <v-card-title>Прибытие</v-card-title>
-          {{ average_arrival }}
+          <v-card-text>
+            <span class="average_number">{{ average_arrival }}</span>
+          </v-card-text>
         </v-card>
+        <v-icon icon="mdi:mdi-door-open" class="icon-of-rating" size="40"></v-icon>
       </v-col>
-      <v-col>
-        <v-card>
+      <v-col class="d-flex flex-column">
+        <v-card variant="text">
           <v-card-title>Общение</v-card-title>
-          {{ average_communication }}
+          <v-card-text>
+            <span class="average_number">{{ average_communication }}</span>
+          </v-card-text>
         </v-card>
+        <v-icon icon="mdi:mdi-account-voice" class="icon-of-rating" size="40"></v-icon>
       </v-col>
-      <v-col>
-        <v-card>
+      <v-col class="d-flex flex-column">
+        <v-card variant="text">
           <v-card-title>Местоположение</v-card-title>
-          {{ average_communication }}
+          <v-card-text>
+            <span class="average_number">{{ average_communication }}</span>
+          </v-card-text>
         </v-card>
+        <v-icon icon="map" class="icon-of-rating" size="40"></v-icon>
       </v-col>
     </v-row>
-    <v-card>
+    <v-divider class="mr-15 ml-15"></v-divider>
+    <v-card variant="text">
       <v-card-item>
         <v-row>
           <v-col>
             <v-card
                 v-for="(comment, index) in commentsLeft"
-
+                variant="text"
                 :key="index"
                 class="mx-auto"
                 subtitle="Откуда или сколько лет на сервисе"
@@ -95,7 +113,12 @@
               <template v-slot:title>
                 <span class="font-weight-black">{{ comment.user_created }}</span>
               </template>
-              <v-card-text class="pt-4">
+              <v-card-item class="pb-0">
+                <v-rating size="x-small" class="comment-rating" density="compact" v-model="comment.overall_impression"
+                          readonly></v-rating>
+                · дата посещения
+              </v-card-item>
+              <v-card-text>
                 {{ comment.text }}
               </v-card-text>
             </v-card>
@@ -103,7 +126,7 @@
           <v-col>
             <v-card
                 v-for="(comment, index) in commentsRight"
-
+                variant="text"
                 :key="index"
                 class="mx-auto"
                 subtitle="Откуда или сколько лет на сервисе"
@@ -116,7 +139,12 @@
               <template v-slot:title>
                 <span class="font-weight-black">{{ comment.user_created }}</span>
               </template>
-              <v-card-text class="pt-4">
+              <v-card-item class="pb-0">
+                <v-rating size="x-small" class="comment-rating" density="compact" v-model="comment.overall_impression"
+                          readonly></v-rating>
+                · дата посещения
+              </v-card-item>
+              <v-card-text>
                 {{ comment.text }}
               </v-card-text>
             </v-card>
@@ -199,5 +227,15 @@ fetchComments().then(
 </script>
 
 <style scoped>
+.average_number {
+  line-height: 1.5rem;
+  font-size: 1.125rem;
+  color: black;
+}
+
+.icon-of-rating {
+  margin-top: auto;
+  margin-bottom: auto;
+}
 
 </style>

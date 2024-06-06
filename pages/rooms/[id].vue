@@ -1,11 +1,13 @@
 <template>
   <photo-gallery :content_id="rental?.content_id"/>
   {{ rental }}
+
   <v-row>
     <v-col
         cols="7"
     >
       <convenience v-if="rental?.conveniences_ids" :conveniences_ids="rental?.conveniences_ids"/>
+      <v-divider class="mr-15 ml-15"></v-divider>
       <calendar-booking/>
     </v-col>
     <v-col
@@ -14,7 +16,9 @@
       <booking-block v-if="rental" :rental="rental"/>
     </v-col>
   </v-row>
+  <v-divider class="mr-15 ml-15"></v-divider>
   <rental-map v-if="rental" :rental="rental"/>
+  <v-divider class="mr-15 ml-15"></v-divider>
   <v-spacer class="pb-sm-1"/>
   <comments/>
 </template>
@@ -45,15 +49,31 @@ const fetchRental = async () => {
     //   collection: 'rentals',
     //   id: route.params.id.toString()
     // });
-    console.log(rental.value)
+    // console.log(rental.value)
   } catch (e) {
     console.error('Ошибка при получении жилья:', e);
   }
 };
 
+const fetchBookingsDates = async () => {
+  try {
+    const bookings_dates = await $fetch('/api/booking_of_rental/booking-dates', {params: {rental_id: route.params.id}})
+    if (bookings_dates.length > 0) {
+
+      const disabledDates = useState('disabledDates')
+      disabledDates.value = bookings_dates
+    }
+    console.log(bookings_dates)
+  } catch (e) {
+    console.error('Ошибка при получении дат бронирования:', e);
+  }
+
+}
+
 
 onMounted(async () => {
   await fetchRental()
+  await fetchBookingsDates()
 })
 
 </script>

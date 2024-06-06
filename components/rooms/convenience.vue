@@ -4,8 +4,8 @@
     <v-card-title>
       Какие удобства вас ждут
     </v-card-title>
-    <v-card-text>
-      <v-list style="column-count: 2" lines="one" height="250px">
+    <v-card-item>
+      <v-list style="column-count: 2" lines="one" >
         <v-list-item
             v-for="(convenience, index) in conveniences"
             :key="index"
@@ -16,8 +16,10 @@
           </template>
         </v-list-item>
       </v-list>
-
-    </v-card-text>
+    </v-card-item>
+    <v-card-actions>
+      <v-btn variant="outlined">Показать все удобства :</v-btn>
+    </v-card-actions>
   </v-card>
 </template>
 
