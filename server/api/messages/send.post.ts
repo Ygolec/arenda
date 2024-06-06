@@ -1,4 +1,8 @@
 import {createDirectus, rest, withToken, readItems, updateFiles, updateFile, createItem} from "@directus/sdk";
+import {io} from "~/server/plugins/socket.io";
+
+
+
 
 export default defineEventHandler(async (event) => {
 
@@ -6,6 +10,7 @@ export default defineEventHandler(async (event) => {
     const client = createDirectus('http://localhost:8055').with(rest());
     const data = await readBody(event)
 
+    // event.req.socket.emit("hello", "world");
 
     // return await client.request(
     //     withToken(directusToken,
@@ -15,8 +20,7 @@ export default defineEventHandler(async (event) => {
     //         })
     //     )
     // )
-
-    return await client.request(
+    await client.request(
         withToken(directusToken,
             createItem('messages', {
                 user_created: data.user_id,
@@ -25,6 +29,8 @@ export default defineEventHandler(async (event) => {
             })
         )
     )
+   io.emit('updateChat')
+
 
     return data
 
