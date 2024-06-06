@@ -94,15 +94,47 @@ declare global {
         name: string;
         name_translate: string;
     }
-    interface directus_files{
+
+    interface directus_files {
         id: string;
         tags: string[];
     }
-    interface messages{
+
+    interface messages {
         id: number;
         user_created: string;
         date_created: string;
         dialog_of_messages_id: number;
         content: string;
+    }
+
+    interface dialog_of_messages {
+        id: number;
+        user_created: string;
+        date_created: string;
+        rental_id: number;
+    }
+
+    interface tenant_information {
+        adults: number,
+        children: number,
+        pets: number
+    }
+
+    interface search_query {
+        adults: number,
+        children: number,
+        pets: number
+        checkin: string,
+        checkout: string,
+        min_bedrooms: number,
+        min_beds: number,
+        min_bathrooms: number,
+        amenities: number[],
+        price_min: number,
+        price_max: number,
+        zoom: number,
+        bounds_lt: number[],
+        bounds_rb: number[]
     }
 }

@@ -3,7 +3,7 @@
     <v-app-bar>
       <v-toolbar-title><a href="/">My App</a></v-toolbar-title>
       <v-spacer/>
-      <user-avatar @exit="onLogout" @login="callAuth=true"/>
+      <user-avatar  @exit="onLogout" @login="callAuth=true"/>
     </v-app-bar>
     <v-main>
       <slot></slot>

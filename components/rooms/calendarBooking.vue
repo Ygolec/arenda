@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <VDatePickerVCalendar v-model.range.string="range_booking" :masks="masks" :min-date="new Date()" :columns="columns"
+    <VDatePickerVCalendar :disabled-dates="disabledDates" v-model.range.string="range_booking" :masks="masks" :min-date="new Date()" :columns="columns"
                           borderless/>
   </v-container>
 
@@ -12,6 +12,7 @@ import {useScreens} from "vue-screen-utils";
 
 const {mapCurrent} = useScreens({xs: '0px', sm: '640px', md: '768px', lg: '1024px'});
 const columns = mapCurrent({lg: 2}, 2);
+const disabledDates = useState('disabledDates')
 
 
 const masks = ref({

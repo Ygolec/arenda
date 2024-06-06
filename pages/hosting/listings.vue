@@ -38,7 +38,8 @@ import DialogEdit from "~/components/hosting/listings/dialog-edit.vue";
 import type {ComputedRef} from "vue";
 
 definePageMeta({
-  middleware: ["account-settings"]
+  middleware: ["account-settings"],
+  layout: 'hosting',
 })
 
 

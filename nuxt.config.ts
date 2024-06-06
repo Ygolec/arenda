@@ -6,6 +6,11 @@ export default defineNuxtConfig({
         transpile: ['vuetify'],
     },
     devtools: {enabled: true},
+    nitro:{
+        experimental:{
+            websocket:true
+        }
+    },
     vite: {
         vue: {
             template: {
@@ -33,6 +38,7 @@ export default defineNuxtConfig({
         autoRefresh: true,
         url: "http://localhost:8055/",
     },
+
 
 
     // security:{
