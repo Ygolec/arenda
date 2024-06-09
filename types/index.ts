@@ -122,19 +122,21 @@ declare global {
     }
 
     interface search_query {
-        adults: number,
-        children: number,
-        pets: number
-        checkin: string,
-        checkout: string,
-        min_bedrooms: number,
-        min_beds: number,
-        min_bathrooms: number,
-        amenities: number[],
-        price_min: number,
-        price_max: number,
-        zoom: number,
-        bounds_lt: number[],
-        bounds_rb: number[]
+        search?: string,
+        adults?: number,
+        children?: number,
+        pets?: number
+        checkin?: string,
+        checkout?: string,
+        min_bedrooms?: number,
+        min_beds?: number,
+        min_bathrooms?: number,
+        amenities?: number[],
+        price_min?: number,
+        price_max?: number,
+        zoom?: number,
+        bounds_lt?: number[],
+        bounds_rb?: number[]
+        coordinates?: number[]
     }
 }
