@@ -116,7 +116,8 @@ const fetchSelectedConveniencesOfRentals = async () => {
         fields: ["conveniences_ids"]
       }
     });
-    if (response.conveniences_ids !== null) {
+    const response2: any=await $fetch('/api/conveniences/range-by-id', {body: response.conveniences_ids, method: 'POST'})
+    if (response2.conveniences_ids !== null) {
       selectedValue.value = response.conveniences_ids
     }
   } catch (e) {
