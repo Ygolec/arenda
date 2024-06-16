@@ -22,6 +22,11 @@
         </v-chip>
       </td>
     </template>
+    <template v-slot:item.guests="{ item }">
+      <td>
+        <user-dialog :key="item.guests" :userID="item.guests"/>
+      </td>
+    </template>
     <template v-slot:item.checkIn="{ item }">
       <td>{{ new Date(item.checkIn).toLocaleDateString('ru').split('T')[0] }}</td>
     </template>
@@ -35,6 +40,8 @@
   </v-data-table>
 </template>
 <script setup lang="ts">
+import UserDialog from "~/components/hosting/reservations/tabs/user-dialog.vue";
+
 const {token} = useDirectusToken()
 const headers = [
   {title: 'Статус', value: 'status'},

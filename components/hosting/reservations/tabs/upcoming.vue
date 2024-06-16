@@ -24,6 +24,11 @@
         </v-chip>
       </td>
     </template>
+    <template v-slot:item.guests="{ item }">
+      <td>
+        <user-dialog :key="item.guests" :userID="item.guests"/>
+      </td>
+    </template>
     <template v-slot:item.checkIn="{ item }">
       <td>{{ new Date(item.checkIn).toLocaleDateString('ru').split('T')[0] }}</td>
     </template>
@@ -57,6 +62,7 @@
 </template>
 <script setup lang="ts">
 import CancelDialog from "~/components/hosting/reservations/cancel-dialog.vue";
+import UserDialog from "~/components/hosting/reservations/tabs/user-dialog.vue";
 
 //Всплывающие окно отмены бронирования
 const cancelDialog = ref(false)
@@ -106,7 +112,7 @@ function cancelBooking(booking_id: number, reason: string) {
 const cancelBookingServer = async (booking_id: number, reason: string) => {
   try {
     await $fetch('/api/booking_of_rental/cancel-booking', {
-      body: {token: token.value, booking_id: booking_id,reason: reason},
+      body: {token: token.value, booking_id: booking_id, reason: reason},
       method: 'POST'
     },)
   } catch (e) {
