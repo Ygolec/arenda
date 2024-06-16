@@ -1,9 +1,9 @@
 <template>
-  {{ map?.center }}<br>
-  {{ bounds }}<br>
-  {{ markers }}<br>
-  {{ rentals_coordinates }}<br>
-  {{ rentals }}
+<!--  {{ map?.center }}<br>-->
+<!--  {{ bounds }}<br>-->
+<!--  {{ markers }}<br>-->
+<!--  {{ rentals_coordinates }}<br>-->
+<!--  {{ rentals }}-->
 
   <yandex-map
       v-model="map"

@@ -6,7 +6,7 @@
         <v-container>
           <v-row justify="center">
             <v-sheet>
-              <v-card width="600px" max-width="800">
+              <v-card variant="text" width="600px" max-width="800">
                 <v-item-group v-model="selectedValue" multiple>
                   <v-row>
                     <v-col

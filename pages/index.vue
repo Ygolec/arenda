@@ -2,8 +2,6 @@
   <div>
     <v-app>
       <!--      <NuxtWelcome />-->
-
-      {{ user }}
       <main-map-yandex/>
     </v-app>
   </div>

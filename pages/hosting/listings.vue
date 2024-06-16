@@ -27,7 +27,7 @@
             {{ statuses[index].name_translate }}
           </v-chip>
           <v-img :src="getThumbnail(uniquePhotos[rental.content_id])"/>
-          {{ rental }}
+<!--          {{ rental }}-->
         </v-card>
       </v-col>
     </v-row>

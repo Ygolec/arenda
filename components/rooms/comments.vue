@@ -1,6 +1,6 @@
 <template>
-  {{ comments }}
-  {{ overall_impression }}
+<!--  {{ comments }}-->
+<!--  {{ overall_impression }}-->
   <v-container>
     <v-container class="pl-6">
       <div class="d-flex  flex-column my-auto">

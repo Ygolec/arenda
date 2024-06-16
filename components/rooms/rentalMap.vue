@@ -1,7 +1,7 @@
 <template>
   <v-container>
-    {{ coordinate }}<br>
-    {{ bounds }}
+<!--    {{ coordinate }}<br>-->
+<!--    {{ bounds }}-->
     <yandex-map
         v-model="map"
         :settings="{
@@ -46,7 +46,7 @@ const LOCATION = ref<YMapLocationRequest>({
 });
 const point = ref({
   coordinates: [37.617644, 55.755819] as LngLat,
-  title: 'Marker inc #0',
+
 });
 
 const map = shallowRef<null | YMap>(null);
@@ -80,7 +80,7 @@ watch(() => props.rental, () => {
             }
             point.value = {
               coordinates: [Number(coordinate.value.longitude), Number(coordinate.value.latitude)],
-              title: 'Marker inc #0',
+
             }
           }
         }

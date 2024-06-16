@@ -4,7 +4,7 @@
       <v-row>
         <v-col cols="3">
           <v-sheet rounded="lg">
-            <v-list rounded="lg">
+            <v-list class="bg-grey-lighten-3" rounded="lg">
               <v-item-group v-model="selectedDialog" mandatory>
                 <v-item
                     v-for="dialog in dialogs_of_messages"
@@ -49,7 +49,7 @@
                 rounded="lg">
               <v-col cols="10" :offset="user?.id==message.user_created ? 2 : 0" v-for="message in messages">
                 <v-card v-if="user?.id!=message.user_created" :key="message.date_created" variant="text">
-                  <v-card-subtitle>{{ message.date_created + ' || ' + message.date_created }}</v-card-subtitle>
+                  <v-card-subtitle>{{ message.user_created + ' || ' + message.date_created }}</v-card-subtitle>
                   <v-card-item>
                     <v-row>
                       <v-col cols="1">
@@ -86,7 +86,7 @@
                   <v-col cols="11">
                     <v-textarea
                         v-model="message"
-                        label="Enter your message"
+                        label="Напишите ваше сообщение"
                         rows="1"
                         auto-grow
                         outlined
