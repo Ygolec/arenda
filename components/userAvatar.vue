@@ -43,7 +43,7 @@
               block
               rounded
               variant="text"
-              href=""
+              href="/trips"
           >
             Бронирования
           </v-btn>
