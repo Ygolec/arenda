@@ -2,6 +2,7 @@
 import '@mdi/font/css/materialdesignicons.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import 'material-icons/iconfont/material-icons.css';
+import { VDateInput } from 'vuetify/labs/VDateInput'
 
 import 'vuetify/styles'
 import {createVuetify} from 'vuetify'
@@ -15,6 +16,9 @@ export default defineNuxtPlugin((app) => {
             locale: 'ru',
             fallback: 'en',
             messages: {ru, en}
+        },
+        components:{
+            VDateInput,
         },
         // ssr: true,
         icons: {

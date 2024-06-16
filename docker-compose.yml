@@ -30,12 +30,14 @@ services:
       ADMIN_EMAIL: "admin@example.com"
       ADMIN_PASSWORD: "d1r3ctu5"
 
-      EMAIL_FROM: "hello@trial-ynrw7gyqv6242k8e.mlsender.net"
+      EMAIL_FROM: $EMAIL_FROM
       EMAIL_TRANSPORT: "smtp"
-      EMAIL_SMTP_HOST: "smtp.mailersend.net"
-      EMAIL_SMTP_PORT: "587"
-      EMAIL_SMTP_USER: "MS_aGh5TR@trial-ynrw7gyqv6242k8e.mlsender.net"
+      EMAIL_SMTP_HOST: $EMAIL_SMTP_HOST
+      EMAIL_SMTP_PORT: $EMAIL_SMTP_PORT
+      EMAIL_SMTP_USER: $EMAIL_SMTP_USER
       EMAIL_SMTP_PASSWORD: $EMAIL_SMTP_PASSWORD
+      EMAIL_SMTP_SECURE: true
+#      EMAIL_SMTP_IGNORE_TLS: false
 
       DB_CLIENT: "pg"
       DB_HOST: "database"
