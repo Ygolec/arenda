@@ -29,6 +29,9 @@ export default defineEventHandler(async (event) => {
                         },
                         user_created: {
                             _eq: user_id
+                        },
+                        status:{
+                            _in: ['accepted','created']
                         }
                     }
                 })
