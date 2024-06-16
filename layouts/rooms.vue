@@ -1,7 +1,7 @@
 <template>
   <v-app id="inspire">
     <v-app-bar class="">
-
+      <v-toolbar-title><a href="/hosting"><v-img src="public/logo-text.png" max-width="100"></v-img></a></v-toolbar-title>
       <v-spacer/>
       <user-avatar @exit="onLogout" @login="callAuth=true"/>
     </v-app-bar>

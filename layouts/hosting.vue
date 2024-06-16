@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-app-bar>
-      <v-toolbar-title><a href="/hosting">My App</a></v-toolbar-title>
+      <v-toolbar-title><a href="/hosting"><v-img src="public/logo-text.png" max-width="100"></v-img></a></v-toolbar-title>
       <NuxtLink class="links" to="/hosting/listings">
         Объявления
       </NuxtLink>

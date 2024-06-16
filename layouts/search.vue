@@ -2,7 +2,7 @@
   <v-app>
     <v-app-bar
         height="80">
-      <v-toolbar-title><a href="/">My App</a></v-toolbar-title>
+      <v-toolbar-title><a href="/"><v-img src="public/logo-text.png" max-width="100"></v-img></a></v-toolbar-title>
       <search-panel/>
       <v-spacer/>
       <user-avatar @exit="onLogout" @login="callAuth=true"/>
