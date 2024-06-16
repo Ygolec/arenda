@@ -5,7 +5,6 @@
         <span class="price-number"> ₽{{ props.rental.price }}</span> <span>ночь</span>
       </v-card-item>
       <v-card-text>
-
         <v-menu
 
             transition="slide-y-transition"
@@ -97,8 +96,8 @@
         </v-menu>
       </v-card-text>
       <v-card-actions>
-        <v-btn @click="book_a_rental" color="black" variant="elevated" block>Забронировать</v-btn>
-
+        <v-btn v-if="canBook" @click="book_a_rental" color="black" variant="elevated" block>Забронировать</v-btn>
+        <v-btn v-if="!canBook" color="black" variant="elevated" readonly block>Вы уже бронируете данное жилье</v-btn>
       </v-card-actions>
     </v-card>
   </v-container>
@@ -108,8 +107,20 @@
 
 import CalendarBooking from "~/components/rooms/calendarBooking.vue";
 
-const user = useState('user')
+const user = useDirectusUser();
 const {token} = useDirectusToken();
+const bookings_of_rental = ref<[]>([])
+
+const canBook = computed(() => {
+  if (bookings_of_rental.value.length > 0) {
+    const books_of_user = bookings_of_rental.value.find((book) => {
+      if (book.user_created == user.value?.id) {
+        return book
+      }
+    })
+    return !books_of_user;
+  }
+});
 
 const props = defineProps<{
   rental: rental,
@@ -186,6 +197,10 @@ async function book_a_rental() {
     console.error('Выберите даты');
   }
 }
+
+onMounted(async () => {
+  bookings_of_rental.value = await $fetch('/api/rooms/books-of-rental', {params: {rental_id: props.rental.id}})
+})
 </script>
 <style scoped>
 .price-number {
